@@ -1,6 +1,7 @@
 package com.maxifly.ier_bot;
 
 import com.maxifly.ier_bot.config.AppConfig;
+import com.maxifly.ier_bot.tel_bot.SimpleBot;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -23,11 +24,9 @@ public class IerBotApplication {
 //	    System.out.println(ent.getName());
 //	    System.out.println(ent.getTime());
 
-		TT tt = (TT) ctx.getBean("retTT");
- tt.ttt();
+
 
 		SimpleBot bot = (SimpleBot) ctx.getBean("simpleBot");
-System.out.println(bot.getBotToken());
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {
 			telegramBotsApi.registerBot(bot);

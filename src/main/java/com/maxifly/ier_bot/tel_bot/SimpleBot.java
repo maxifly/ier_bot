@@ -1,5 +1,7 @@
-package com.maxifly.ier_bot;
+package com.maxifly.ier_bot.tel_bot;
 
+import com.maxifly.ier_bot.ggl_clnt.Quickstart;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -12,7 +14,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 
 public class SimpleBot extends TelegramLongPollingBot {
-//    private Quickstart qs = new Quickstart();
+    @Autowired
+    private Quickstart qs;
 
 
 //    public static void main(String[] args) {
@@ -55,8 +58,8 @@ public class SimpleBot extends TelegramLongPollingBot {
             if (message.getText().equals("/help"))
                 sendMsg(message, "Привет, я робот");
             else if (message.getText().equals("/price")) {
-                sendMsg(message, "price");
-//                sendMsg(message, qs.getAllValues());
+//                sendMsg(message, "price");
+                sendMsg(message, qs.getAllValues());
             } else
                 sendMsg(message, "Я не знаю что ответить на это");
         }

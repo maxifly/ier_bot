@@ -1,7 +1,7 @@
 package com.maxifly.ier_bot.config;
 
-import com.maxifly.ier_bot.SimpleBot;
-import com.maxifly.ier_bot.TT;
+import com.maxifly.ier_bot.ggl_clnt.Quickstart;
+import com.maxifly.ier_bot.tel_bot.SimpleBot;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +20,12 @@ public class AppConfig {
     @Value("${bot.token}")
     String botToken;
 
+    @Value("${sheet.id}")
+    String sheetId;
+    @Value("${sheet.range}")
+    String sheetRange;
 
 
-    @Bean()
-    public TT retTT() {
-        return new TT();
-    }
 
     @Bean()
     public SimpleBot simpleBot() {
@@ -33,5 +33,13 @@ public class AppConfig {
         sb.setBot_Token(this.botToken);
         sb.setBot_Username(this.botUserName);
         return sb;
+    }
+
+    @Bean
+    public Quickstart quickstart(){
+        Quickstart qs = new Quickstart();
+        qs.setSpreadsheetId(sheetId);
+        qs.setRange(sheetRange);
+        return qs;
     }
 }

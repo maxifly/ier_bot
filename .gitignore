@@ -2,3 +2,4 @@
 *.iml
 /src/main/resources/bot.properties
 /target/*
+/src/main/resources/client_secret.json
