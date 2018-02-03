@@ -17,15 +17,6 @@ public class IerBotApplication {
 	public static void main(String[] args) {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
-//		ctx.register(AppConfig.class);
-//		ctx.refresh();
-//
-//	Entitlement ent= (Entitlement)ctx.getBean("entitlement");
-//	    System.out.println(ent.getName());
-//	    System.out.println(ent.getTime());
-
-
-
 		SimpleBot bot = (SimpleBot) ctx.getBean("simpleBot");
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {

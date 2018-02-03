@@ -13,6 +13,11 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import org.apache.log4j.Logger;
+//import org.apache.log4j.spi.LoggerFactory;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +25,10 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class Quickstart {
+//    Logger logger = Logger.getLogger(Quickstart.class);
+    Logger logger = LoggerFactory.getLogger(Quickstart.class);
 
     private String spreadsheetId;
     private String range;
@@ -123,6 +131,8 @@ public class Quickstart {
                 System.out.println("No data found.");
                 result.append("No data found.");
             } else {
+                logger.info("KUKUKUKU");
+                logger.error("tttt");
                 System.out.println("Name, Major");
                 for (List row : values) {
                     // Print columns A and E, which correspond to indices 0 and 4.
