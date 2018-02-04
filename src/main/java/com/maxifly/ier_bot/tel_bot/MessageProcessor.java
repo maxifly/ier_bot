@@ -1,5 +1,6 @@
 package com.maxifly.ier_bot.tel_bot;
 
+import com.maxifly.ier_bot.Prices;
 import com.maxifly.ier_bot.ggl_clnt.GetVal_Exception;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.ggl_clnt.model.PriceRow;
@@ -12,7 +13,8 @@ import java.util.Map;
 
 public class MessageProcessor {
     @Autowired
-    private Quickstart qs;
+    Prices prices;
+
     private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
 
     public String getPrice(String[] msg_tockens) {
@@ -21,9 +23,7 @@ public class MessageProcessor {
         }
         String code = msg_tockens[1];
         try {
-            Map<String, PriceRow> prices = get_prices();
-
-            PriceRow price = prices.get(code.toUpperCase());
+            PriceRow price = prices.getPrice(code.toUpperCase());
 
             if (price == null) {
                 return code + ": Данные не найдены";
@@ -36,11 +36,16 @@ public class MessageProcessor {
         }
     }
 
+    public String clear() {
+        prices.flushAll();
+        return "Данные сброшены";
+    }
+
     public String getAllPrice_Resp() {
         StringBuilder sb = new StringBuilder("\n");
         LocalDateTime localDateTime = null;
         try {
-            Map<String, PriceRow> prices = get_prices();
+            Map<String, PriceRow> prices = this.prices.getAllPrice();
             for (Map.Entry<String, PriceRow> entry : prices.entrySet()) {
                 if (localDateTime == null) localDateTime = entry.getValue().getInfo_date();
                 if (localDateTime.compareTo(entry.getValue().getInfo_date()) < 0) {
@@ -63,8 +68,8 @@ public class MessageProcessor {
 
     }
 
-    private Map<String, PriceRow> get_prices() throws GetVal_Exception {
-        return qs.getAllValues();
-    }
+//    private Map<String, PriceRow> get_prices() throws GetVal_Exception {
+//        return qs.getAllValues();
+//    }
 
 }
