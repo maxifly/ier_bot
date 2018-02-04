@@ -1,6 +1,8 @@
 package com.maxifly.ier_bot.tel_bot;
 
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,12 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class SimpleBot extends TelegramLongPollingBot {
     @Autowired
-    private Quickstart qs;
+    private MessageProcessor messageProcessor;
 
+    private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
 
+    static String HELP_STRING =
+            "Supported commands: \n /help \n /allprice \n /price yourCode";
 //    public static void main(String[] args) {
 //        ApiContextInitializer.init();
 //        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -54,14 +59,28 @@ public class SimpleBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
-            System.out.println(message.getText());
-            if (message.getText().equals("/help"))
-                sendMsg(message, "Привет, я робот");
-            else if (message.getText().equals("/price")) {
-//                sendMsg(message, "price");
-                sendMsg(message, qs.getAllValues());
-            } else
-                sendMsg(message, "Я не знаю что ответить на это");
+            logger.info("Message: <" + message.getText() + ">");
+
+            String[] msg_tockens;
+            msg_tockens = message.getText().split("\\s+");
+
+            if (msg_tockens.length == 0) {
+                msg_tockens = new String[]{"/help"};
+            }
+
+            switch (msg_tockens[0]) {
+                case "/help":
+                    sendMsg(message, HELP_STRING);
+                    break;
+                case "/allprice":
+                    sendMsg(message, messageProcessor.getAllPrice_Resp());
+                break;
+                case "/price":
+                    sendMsg(message, messageProcessor.getPrice(msg_tockens));
+                    break;
+                default:
+                    sendMsg(message, "Я не знаю что ответить на это");
+            }
         }
     }
 

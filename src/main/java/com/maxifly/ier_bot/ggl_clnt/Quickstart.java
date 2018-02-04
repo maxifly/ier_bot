@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
+import com.maxifly.ier_bot.ggl_clnt.model.PriceRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.apache.log4j.Logger;
@@ -22,38 +23,54 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Quickstart {
-//    Logger logger = Logger.getLogger(Quickstart.class);
+    //    Logger logger = Logger.getLogger(Quickstart.class);
     Logger logger = LoggerFactory.getLogger(Quickstart.class);
 
     private String spreadsheetId;
     private String range;
+    private Integer codeColumn;
+    private Integer priceColumn;
 
 
-    /** Application name. */
+    /**
+     * Application name.
+     */
     private static final String APPLICATION_NAME =
             "Google Sheets API Java Quickstart";
 
-    /** Directory to store user credentials for this application. */
+    /**
+     * Directory to store user credentials for this application.
+     */
     private static final java.io.File DATA_STORE_DIR = new java.io.File(
             System.getProperty("user.home"), ".credentials/sheets.googleapis.com-java-quickstart");
 
-    /** Global instance of the {@link FileDataStoreFactory}. */
+    /**
+     * Global instance of the {@link FileDataStoreFactory}.
+     */
     private static FileDataStoreFactory DATA_STORE_FACTORY;
 
-    /** Global instance of the JSON factory. */
+    /**
+     * Global instance of the JSON factory.
+     */
     private static final JsonFactory JSON_FACTORY =
             JacksonFactory.getDefaultInstance();
 
-    /** Global instance of the HTTP transport. */
+    /**
+     * Global instance of the HTTP transport.
+     */
     private static HttpTransport HTTP_TRANSPORT;
 
-    /** Global instance of the scopes required by this quickstart.
-     *
+    /**
+     * Global instance of the scopes required by this quickstart.
+     * <p>
      * If modifying these scopes, delete your previously saved credentials
      * at ~/.credentials/sheets.googleapis.com-java-quickstart
      */
@@ -72,6 +89,7 @@ public class Quickstart {
 
     /**
      * Creates an authorized Credential object.
+     *
      * @return an authorized Credential object.
      * @throws IOException
      */
@@ -98,6 +116,7 @@ public class Quickstart {
 
     /**
      * Build and return an authorized Sheets API client service.
+     *
      * @return an authorized Sheets API client service
      * @throws IOException
      */
@@ -117,10 +136,17 @@ public class Quickstart {
         this.range = range;
     }
 
-    public String getAllValues() {
+    public void setCodeColumn(Integer codeColumn) {
+        this.codeColumn = codeColumn;
+    }
 
+    public void setPriceColumn(Integer priceColumn) {
+        this.priceColumn = priceColumn;
+    }
+
+    public Map<String, PriceRow> getAllValues() throws GetVal_Exception {
+        Map<String, PriceRow> result = new HashMap<>();
         try {
-            StringBuilder result = new StringBuilder("Результат");
             Sheets service = getSheetsService();
 
             ValueRange response = service.spreadsheets().values()
@@ -128,26 +154,25 @@ public class Quickstart {
                     .execute();
             List<List<Object>> values = response.getValues();
             if (values == null || values.size() == 0) {
-                System.out.println("No data found.");
-                result.append("No data found.");
+                logger.info("No data found.");
             } else {
-                logger.info("KUKUKUKU");
-                logger.error("tttt");
-                System.out.println("Name, Major");
+                LocalDateTime localDateTime = LocalDateTime.now();
                 for (List row : values) {
                     // Print columns A and E, which correspond to indices 0 and 4.
-                    System.out.printf("%s, %s\n", row.get(0), row.get(1));
-                    result.append(row.get(0));
-                    result.append(": ");
-                    result.append(row.get(1));
-                    result.append("\n");
+                    PriceRow priceRow =
+                            new PriceRow((String) row.get(codeColumn), (String) row.get(priceColumn), localDateTime);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Get row: " + priceRow);
+                    }
+                    // Пока решаю, что коды регистронезависимые
+                    result.put(priceRow.getItemCode().toUpperCase(),priceRow);
                 }
+                logger.info("Get "+result.size() +" rows");
             }
-            return result.toString();
-        }
-        catch (Exception ioe) {
-            System.out.println(ioe.getMessage());
-            return "Error";
+            return result;
+        } catch (Exception ioe) {
+            logger.error("Exception when get values", ioe);
+            throw new GetVal_Exception("Exception when get values", ioe);
         }
     }
 
