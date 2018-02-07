@@ -2,7 +2,7 @@ package com.maxifly.ier_bot.config;
 
 import com.maxifly.ier_bot.Prices;
 import com.maxifly.ier_bot.ScheduledTasks;
-import com.maxifly.ier_bot.ggl_clnt.BotRegister;
+import com.maxifly.ier_bot.tel_bot.BotRegister;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.tel_bot.MessageProcessor;
 import com.maxifly.ier_bot.tel_bot.SimpleBot;
@@ -14,14 +14,13 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@PropertySource({
-        "classpath:bot.properties",
-        "classpath:application.properties"
-})
+//@PropertySource({
+//        "classpath:bot.properties",
+//        "classpath:application.properties"
+//})
 @EnableCaching
 @EnableScheduling
 public class AppConfig {
@@ -43,6 +42,9 @@ public class AppConfig {
     @Value("${sheet.column.price}")
     Integer columnPrice;
 
+    @Value("${prices.cache.flush.delay}")
+    String testD;
+
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("prices");
@@ -50,6 +52,8 @@ public class AppConfig {
 
     @Bean()
     public SimpleBot simpleBot() {
+        logger.debug("botUserName: {}",botUserName);
+        logger.info("testD: {}",testD);
         SimpleBot sb = new SimpleBot();
         sb.setBot_Token(this.botToken);
         sb.setBot_Username(this.botUserName);

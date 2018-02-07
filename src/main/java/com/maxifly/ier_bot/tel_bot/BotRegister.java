@@ -1,10 +1,8 @@
-package com.maxifly.ier_bot.ggl_clnt;
+package com.maxifly.ier_bot.tel_bot;
 
-import com.maxifly.ier_bot.tel_bot.SimpleBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
