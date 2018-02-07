@@ -2,9 +2,12 @@ package com.maxifly.ier_bot.config;
 
 import com.maxifly.ier_bot.Prices;
 import com.maxifly.ier_bot.ScheduledTasks;
+import com.maxifly.ier_bot.ggl_clnt.BotRegister;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.tel_bot.MessageProcessor;
 import com.maxifly.ier_bot.tel_bot.SimpleBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -22,6 +25,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 public class AppConfig {
+    private Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
     @Value("${bot.username}")
     String botUserName;
@@ -74,5 +78,10 @@ public class AppConfig {
         qs.setCodeColumn(columnCode);
         qs.setPriceColumn(columnPrice);
         return qs;
+    }
+
+    @Bean
+    public BotRegister botRegister() {
+        return new BotRegister();
     }
 }

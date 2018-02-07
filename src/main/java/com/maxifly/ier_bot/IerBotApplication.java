@@ -2,6 +2,7 @@ package com.maxifly.ier_bot;
 
 import com.maxifly.ier_bot.config.AppConfig;
 import com.maxifly.ier_bot.tel_bot.SimpleBot;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,17 +16,17 @@ public class IerBotApplication {
 		ApiContextInitializer.init();
 	}
 	public static void main(String[] args) {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+//		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+//
+//		SimpleBot bot = (SimpleBot) ctx.getBean("simpleBot");
+//		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+//		try {
+//			telegramBotsApi.registerBot(bot);
+//		} catch (TelegramApiException e) {
+//			e.printStackTrace();
+//		}
 
-		SimpleBot bot = (SimpleBot) ctx.getBean("simpleBot");
-		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-		try {
-			telegramBotsApi.registerBot(bot);
-		} catch (TelegramApiException e) {
-			e.printStackTrace();
-		}
-
-//		SpringApplication.run(IerBotApplication.class, args);
+		SpringApplication.run(AppConfig.class, args);
 	}
 
 }
