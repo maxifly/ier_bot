@@ -46,7 +46,7 @@ public class MessageProcessor {
         LocalDateTime localDateTime = null;
         try {
             Map<String, PriceRow> prices = this.prices.getAllPrice();
-            for (Map.Entry<String, PriceRow> entry : prices.entrySet()) {
+            for (Map.Entry<String, PriceRow> entry :  prices.entrySet()) {
                 if (localDateTime == null) localDateTime = entry.getValue().getInfo_date();
                 if (localDateTime.compareTo(entry.getValue().getInfo_date()) < 0) {
                     localDateTime = entry.getValue().getInfo_date();

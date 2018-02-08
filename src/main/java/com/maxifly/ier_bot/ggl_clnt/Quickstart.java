@@ -144,8 +144,7 @@ public class Quickstart {
         this.priceColumn = priceColumn;
     }
 
-    public Map<String, PriceRow> getAllValues() throws GetVal_Exception {
-        Map<String, PriceRow> result = new HashMap<>();
+    public void getAllValues( Map<String, PriceRow> result  ) throws GetVal_Exception {
         try {
             Sheets service = getSheetsService();
 
@@ -169,7 +168,6 @@ public class Quickstart {
                 }
                 logger.info("Get "+result.size() +" rows");
             }
-            return result;
         } catch (Exception ioe) {
             logger.error("Exception when get values", ioe);
             throw new GetVal_Exception("Exception when get values", ioe);

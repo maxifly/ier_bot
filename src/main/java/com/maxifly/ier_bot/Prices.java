@@ -9,8 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.util.NumberUtils;
 
+
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Prices {
     @Autowired
@@ -23,6 +29,7 @@ public class Prices {
         logger.info("get price");
         Map<String, PriceRow> prices = get_prices();
         PriceRow price = prices.get(code.toUpperCase());
+        if (!isValidPrice(price)) return null;
         return price;
     }
 
@@ -32,12 +39,35 @@ public class Prices {
     }
 
     public Map<String, PriceRow> getAllPrice() throws GetVal_Exception {
-        return get_prices();
-        //todo КАК-ТО ПЕРЕДЕЛАТЬ
+        Map<String, PriceRow> result = new TreeMap<>();
+
+        for (Map.Entry<String, PriceRow> row : get_prices().entrySet()) {
+            if (isValidPrice(row.getValue())) result.put(row.getKey(),row.getValue());
+        }
+
+//        try {
+//            Thread.sleep(20000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        return result;
+        //todo КАК-ТО ПЕРЕДЕЛАТЬ. Может кешировать как-то?
     }
 
     private Map<String, PriceRow> get_prices() throws GetVal_Exception {
-        return qs.getAllValues();
+        Map<String, PriceRow> result = new HashMap<>();
+        qs.getAllValues(result);
+        return result;
+    }
+
+    private boolean isValidPrice(PriceRow priceRow) {
+        if (priceRow == null) return false;
+        try {
+            NumberUtils.parseNumber(priceRow.getPrice(), Float.class, NumberFormat.getNumberInstance(new Locale("ru","RU")));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
