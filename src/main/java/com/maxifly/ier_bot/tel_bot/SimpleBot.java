@@ -22,7 +22,8 @@ public class SimpleBot extends TelegramLongPollingBot {
     private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
 
     static String HELP_STRING =
-            "Supported commands: \n /help \n /allprice \n /price yourCode \n /clear - сбросить кеш данных";
+            "Supported commands: \n /help \n /allprice \n /price yourCode";
+//            "Supported commands: \n /help \n /allprice \n /price yourCode \n /clear - сбросить кеш данных";
 //    public static void main(String[] args) {
 //        ApiContextInitializer.init();
 //        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -69,6 +70,7 @@ public class SimpleBot extends TelegramLongPollingBot {
             }
 
             switch (msg_tockens[0]) {
+                case "/start":
                 case "/help":
                     sendMsg(message, HELP_STRING);
                     break;

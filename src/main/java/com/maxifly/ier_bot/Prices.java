@@ -38,6 +38,7 @@ public class Prices {
         logger.info("clear cache");
     }
 
+    @Cacheable(value = "prices", key="'allP'")
     public Map<String, PriceRow> getAllPrice() throws GetVal_Exception {
         Map<String, PriceRow> result = new TreeMap<>();
 
