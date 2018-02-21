@@ -2,6 +2,7 @@ package com.maxifly.ier_bot.config;
 
 import com.maxifly.ier_bot.Prices;
 import com.maxifly.ier_bot.ScheduledTasks;
+import com.maxifly.ier_bot.ggl_clnt.mapper.BondRowMapper;
 import com.maxifly.ier_bot.tel_bot.BotRegister;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.tel_bot.MessageProcessor;
@@ -74,13 +75,13 @@ public class AppConfig {
         return new Prices();
     }
 
+
     @Bean
     public Quickstart quickstart() {
         Quickstart qs = new Quickstart();
         qs.setSpreadsheetId(sheetId);
         qs.setRange(sheetRange);
-        qs.setCodeColumn(columnCode);
-        qs.setPriceColumn(columnPrice);
+        qs.setBondRowMapper(new BondRowMapper());
         return qs;
     }
 

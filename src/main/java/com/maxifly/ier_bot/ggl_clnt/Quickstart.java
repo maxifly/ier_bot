@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
+import com.maxifly.ier_bot.ggl_clnt.mapper.BondRowMapper;
 import com.maxifly.ier_bot.ggl_clnt.model.PriceRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +37,7 @@ public class Quickstart {
 
     private String spreadsheetId;
     private String range;
-    private Integer codeColumn;
-    private Integer priceColumn;
+    private BondRowMapper bondRowMapper;
 
 
     /**
@@ -136,15 +136,11 @@ public class Quickstart {
         this.range = range;
     }
 
-    public void setCodeColumn(Integer codeColumn) {
-        this.codeColumn = codeColumn;
+    public void setBondRowMapper(BondRowMapper bondRowMapper) {
+        this.bondRowMapper = bondRowMapper;
     }
 
-    public void setPriceColumn(Integer priceColumn) {
-        this.priceColumn = priceColumn;
-    }
-
-    public void getAllValues( Map<String, PriceRow> result  ) throws GetVal_Exception {
+    public void getAllValues(Map<String, PriceRow> result) throws GetVal_Exception {
         try {
             Sheets service = getSheetsService();
 
@@ -158,15 +154,14 @@ public class Quickstart {
                 LocalDateTime localDateTime = LocalDateTime.now();
                 for (List row : values) {
                     // Print columns A and E, which correspond to indices 0 and 4.
-                    PriceRow priceRow =
-                            new PriceRow((String) row.get(codeColumn), (String) row.get(priceColumn), localDateTime);
+                    PriceRow priceRow = bondRowMapper.createPriceRow(row, localDateTime);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Get row: " + priceRow);
                     }
                     // Пока решаю, что коды регистронезависимые
-                    result.put(priceRow.getItemCode().toUpperCase(),priceRow);
+                    result.put(priceRow.getItemCode().toUpperCase(), priceRow);
                 }
-                logger.info("Get "+result.size() +" rows");
+                logger.info("Get " + result.size() + " rows");
             }
         } catch (Exception ioe) {
             logger.error("Exception when get values", ioe);
