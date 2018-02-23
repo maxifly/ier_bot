@@ -64,7 +64,7 @@ public class Prices {
     private boolean isValidPrice(PriceRow priceRow) {
         if (priceRow == null) return false;
         try {
-            NumberUtils.parseNumber(priceRow.getPrice(), Float.class, NumberFormat.getNumberInstance(new Locale("ru","RU")));
+//            NumberUtils.parseNumber(priceRow.getPrice(), Float.class, NumberFormat.getNumberInstance(new Locale("ru","RU")));
             return true;
         } catch (Exception e) {
             return false;

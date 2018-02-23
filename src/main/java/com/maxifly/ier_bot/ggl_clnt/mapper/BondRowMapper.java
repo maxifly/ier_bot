@@ -38,30 +38,37 @@ public class BondRowMapper {
 //TODO Прикрутить валидацию
     public PriceRow createPriceRow(List<Object> row, LocalDateTime localDateTime) {
         PriceRow priceRow = new PriceRow((String) row.get(columnISIN), localDateTime);
-        priceRow.setTicker((String) row.get(columnTicker));
-        priceRow.setName((String) row.get(columnName));
-        priceRow.setLastTransactionDate((String) row.get(columnLastTransactionDate));
-        priceRow.setLastTransactionPrice((String) row.get(columnLastTransactionPrice));
-        priceRow.setBidPrice((String) row.get(columnBidPrice));
-        priceRow.setAskPrice((String) row.get(columnAskPrice));
-        priceRow.setMidYTM((String) row.get(columnMidYTM));
-        priceRow.setBidYTM((String) row.get(columnBidYTM));
-        priceRow.setAskYTM((String) row.get(columnAskYTM));
-        priceRow.setCoupon((String) row.get(columnCoupon));
-        priceRow.setRepayment((String) row.get(columnRepayment));
-        priceRow.setNKD((String) row.get(columnNKD));
-        priceRow.setCurrency((String) row.get(columnCurrency));
-        priceRow.setPaymentCount((String) row.get(columnPaymentCount));
-        priceRow.setAvgDuration((String) row.get(columnAvgDuration));
-        priceRow.setMoodys((String) row.get(columnMoodys));
-        priceRow.setSP((String) row.get(columnSP));
-        priceRow.setFitch((String) row.get(columnFitch));
-        priceRow.setCountry((String) row.get(columnCountry));
-        priceRow.setMinLot((String) row.get(columnMinLot));
-        priceRow.setRepaymentYear((String) row.get(columnRepaymentYear));
-        priceRow.setCouponType((String) row.get(columnCouponType));
-        priceRow.setDebt((String) row.get(columnDebt));
-        priceRow.setGroup((String) row.get(columnGroup));
+        priceRow.setTicker(convertWithValidate((String) row.get(columnTicker)));
+        priceRow.setName(convertWithValidate((String) row.get(columnName)));
+        priceRow.setLastTransactionDate(convertWithValidate((String) row.get(columnLastTransactionDate)));
+        priceRow.setLastTransactionPrice(convertWithValidate((String) row.get(columnLastTransactionPrice)));
+        priceRow.setBidPrice(convertWithValidate((String) row.get(columnBidPrice)));
+        priceRow.setAskPrice(convertWithValidate((String) row.get(columnAskPrice)));
+        priceRow.setMidYTM(convertWithValidate((String) row.get(columnMidYTM)));
+        priceRow.setBidYTM(convertWithValidate((String) row.get(columnBidYTM)));
+        priceRow.setAskYTM(convertWithValidate((String) row.get(columnAskYTM)));
+        priceRow.setCoupon(convertWithValidate((String) row.get(columnCoupon)));
+        priceRow.setRepayment(convertWithValidate((String) row.get(columnRepayment)));
+        priceRow.setNKD(convertWithValidate((String) row.get(columnNKD)));
+        priceRow.setCurrency(convertWithValidate((String) row.get(columnCurrency)));
+        priceRow.setPaymentCount(convertWithValidate((String) row.get(columnPaymentCount)));
+        priceRow.setAvgDuration(convertWithValidate((String) row.get(columnAvgDuration)));
+        priceRow.setMoodys(convertWithValidate((String) row.get(columnMoodys)));
+        priceRow.setSP(convertWithValidate((String) row.get(columnSP)));
+        priceRow.setFitch(convertWithValidate((String) row.get(columnFitch)));
+        priceRow.setCountry(convertWithValidate((String) row.get(columnCountry)));
+        priceRow.setMinLot(convertWithValidate((String) row.get(columnMinLot)));
+        priceRow.setRepaymentYear(convertWithValidate((String) row.get(columnRepaymentYear)));
+        priceRow.setCouponType(convertWithValidate((String) row.get(columnCouponType)));
+        priceRow.setDebt(convertWithValidate((String) row.get(columnDebt)));
+        priceRow.setGroup(convertWithValidate((String) row.get(columnGroup)));
         return priceRow;
+    }
+
+    private String convertWithValidate(String source) {
+        if (source == null) return null;
+        if (source.trim().startsWith("#")) return null;
+        return source.trim();
+
     }
 }

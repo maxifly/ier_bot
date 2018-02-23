@@ -28,7 +28,7 @@ public class MessageProcessor {
             if (price == null) {
                 return code + ": Данные не найдены";
             } else {
-                return price.getItemCode() + ": " + price.getPrice() + "\n" +
+                return price.getItemCode() + ": "  + "\n" +
                         "данные на дату: " + price.getInfo_date();
             }
         } catch (GetVal_Exception e) {
@@ -53,7 +53,7 @@ public class MessageProcessor {
                 }
                 sb.append(entry.getValue().getItemCode());
                 sb.append(": ");
-                sb.append(entry.getValue().getPrice());
+
                 sb.append("\n");
             }
 

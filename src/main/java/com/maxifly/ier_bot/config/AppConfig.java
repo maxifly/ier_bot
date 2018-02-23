@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
@@ -88,5 +89,10 @@ public class AppConfig {
     @Bean
     public BotRegister botRegister() {
         return new BotRegister();
+    }
+
+    @Bean
+    public BondRowMapper bondRowMapper() {
+        return new BondRowMapper();
     }
 }
