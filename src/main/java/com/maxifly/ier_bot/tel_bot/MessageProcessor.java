@@ -7,33 +7,39 @@ import com.maxifly.ier_bot.ggl_clnt.model.PriceRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Map;
 
 public class MessageProcessor {
     @Autowired
     Prices prices;
+    @Autowired
+    ApplicationContext applicationContext;
 
     private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
 
     public String getPrice(String[] msg_tockens) {
-        if (msg_tockens.length < 2) {
-            return "Не указан код";
-        }
-        String code = msg_tockens[1];
-        try {
-            PriceRow price = prices.getPrice(code.toUpperCase());
+        return applicationContext.getMessage("msg",null, Locale.getDefault());
 
-            if (price == null) {
-                return code + ": Данные не найдены";
-            } else {
-                return price.getItemCode() + ": "  + "\n" +
-                        "данные на дату: " + price.getInfo_date();
-            }
-        } catch (GetVal_Exception e) {
-            return "Ошибка получения данных";
-        }
+//        if (msg_tockens.length < 2) {
+//            return "Не указан код";
+//        }
+//        String code = msg_tockens[1];
+//        try {
+//            PriceRow price = prices.getPrice(code.toUpperCase());
+//
+//            if (price == null) {
+//                return code + ": Данные не найдены";
+//            } else {
+//                return price.getItemCode() + ": "  + "\n" +
+//                        "данные на дату: " + price.getInfo_date();
+//            }
+//        } catch (GetVal_Exception e) {
+//            return "Ошибка получения данных";
+//        }
     }
 
     public String clear() {
