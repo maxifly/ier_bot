@@ -80,6 +80,9 @@ public class SimpleBot extends TelegramLongPollingBot {
                 case "/price":
                     sendMsg(message, messageProcessor.getPrice(msg_tockens));
                     break;
+                case "/info":
+                    sendMsg(message, messageProcessor.getInfo(msg_tockens));
+                    break;
                 case "/clear":
                     sendMsg(message, messageProcessor.clear());
                     break;

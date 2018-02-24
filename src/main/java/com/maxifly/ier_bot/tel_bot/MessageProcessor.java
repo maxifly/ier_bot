@@ -21,26 +21,59 @@ public class MessageProcessor {
 
     private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
 
-    public String getPrice(String[] msg_tockens) {
-        return applicationContext.getMessage("msg",null, Locale.getDefault());
+    public String getPrice(String[] msg_tokens) {
+        if (msg_tokens.length < 2) {
+            return "Не указан код";
+        }
+        String code = msg_tokens[1];
+        try {
+            PriceRow price = prices.getPrice(code.toUpperCase());
 
-//        if (msg_tockens.length < 2) {
-//            return "Не указан код";
-//        }
-//        String code = msg_tockens[1];
-//        try {
-//            PriceRow price = prices.getPrice(code.toUpperCase());
-//
-//            if (price == null) {
-//                return code + ": Данные не найдены";
-//            } else {
-//                return price.getItemCode() + ": "  + "\n" +
-//                        "данные на дату: " + price.getInfo_date();
-//            }
-//        } catch (GetVal_Exception e) {
-//            return "Ошибка получения данных";
-//        }
+            if (price == null) {
+                return code + ": Данные не найдены";
+            } else {
+                return applicationContext.getMessage("msg.price",
+                        (new Object[]{price.getName(),
+                                price.getBidPrice(),
+                                price.getAskPrice(),
+                                price.getLastTransactionPrice(),
+                                price.getLastTransactionDate()}),
+                        Locale.getDefault());
+            }
+        } catch (GetVal_Exception e) {
+            return "Ошибка получения данных";
+        }
     }
+
+    public String getInfo(String[] msg_tokens) {
+        if (msg_tokens.length < 2) {
+            return "Не указан код";
+        }
+        String code = msg_tokens[1];
+        try {
+            PriceRow price = prices.getPrice(code.toUpperCase());
+
+            if (price == null) {
+                return code + ": Данные не найдены";
+            } else {
+                return applicationContext.getMessage("msg.info",
+                        (new Object[]{price.getName(),
+                                price.getCurrency(),
+                                price.getBidPrice(),
+                                price.getAskPrice(),
+                                price.getLastTransactionPrice(),
+                                price.getCoupon(),
+                        price.getAvgDuration(),
+                        price.getMidYTM(),
+                        price.getCountry(),
+                        price.getGroup()}),
+                        Locale.getDefault());
+            }
+        } catch (GetVal_Exception e) {
+            return "Ошибка получения данных";
+        }
+    }
+
 
     public String clear() {
         prices.flushAll();
@@ -52,7 +85,7 @@ public class MessageProcessor {
         LocalDateTime localDateTime = null;
         try {
             Map<String, PriceRow> prices = this.prices.getAllPrice();
-            for (Map.Entry<String, PriceRow> entry :  prices.entrySet()) {
+            for (Map.Entry<String, PriceRow> entry : prices.entrySet()) {
                 if (localDateTime == null) localDateTime = entry.getValue().getInfo_date();
                 if (localDateTime.compareTo(entry.getValue().getInfo_date()) < 0) {
                     localDateTime = entry.getValue().getInfo_date();

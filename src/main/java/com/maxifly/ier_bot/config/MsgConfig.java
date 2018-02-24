@@ -15,6 +15,7 @@ public class MsgConfig{
         MessageSource messageSource() {
             ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
             messageSource.setBasename("local/messages");
+            messageSource.setDefaultEncoding("UTF-8");
             return messageSource;
         }
 }

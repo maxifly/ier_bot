@@ -33,12 +33,6 @@ public class PriceRow {
     private  String group; // Группа
     private final LocalDateTime info_date;
 
-
-
-
-
-
-
     public PriceRow(String itemCode, LocalDateTime info_date) {
         this.itemCode = itemCode;
         this.info_date = info_date;
