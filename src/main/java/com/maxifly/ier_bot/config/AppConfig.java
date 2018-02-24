@@ -8,6 +8,7 @@ import com.maxifly.ier_bot.tel_bot.BotRegister;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.tel_bot.MessageProcessor;
 import com.maxifly.ier_bot.tel_bot.SimpleBot;
+import com.maxifly.ier_bot.tel_bot.UserChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,15 +54,14 @@ public class AppConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("prices");
+        return new ConcurrentMapCacheManager("prices", "rights");
     }
-
 
 
     @Bean()
     public SimpleBot simpleBot() {
-        logger.debug("botUserName: {}",botUserName);
-        logger.info("testD: {}",testD);
+        logger.debug("botUserName: {}", botUserName);
+        logger.info("testD: {}", testD);
         SimpleBot sb = new SimpleBot();
         sb.setBot_Token(this.botToken);
         sb.setBot_Username(this.botUserName);
@@ -77,6 +77,7 @@ public class AppConfig {
     public ScheduledTasks scheduledTasks() {
         return new ScheduledTasks();
     }
+
     @Bean()
     public Prices prices() {
         return new Prices();
@@ -102,5 +103,8 @@ public class AppConfig {
         return new BondRowMapper();
     }
 
-
+    @Bean
+    public UserChecker userChecker() {
+        return new UserChecker();
+    }
 }
