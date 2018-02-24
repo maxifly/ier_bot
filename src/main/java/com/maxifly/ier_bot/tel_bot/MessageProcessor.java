@@ -80,35 +80,4 @@ public class MessageProcessor {
         return "Данные сброшены";
     }
 
-    public String getAllPrice_Resp() {
-        StringBuilder sb = new StringBuilder("\n");
-        LocalDateTime localDateTime = null;
-        try {
-            Map<String, PriceRow> prices = this.prices.getAllPrice();
-            for (Map.Entry<String, PriceRow> entry : prices.entrySet()) {
-                if (localDateTime == null) localDateTime = entry.getValue().getInfo_date();
-                if (localDateTime.compareTo(entry.getValue().getInfo_date()) < 0) {
-                    localDateTime = entry.getValue().getInfo_date();
-                }
-                sb.append(entry.getValue().getItemCode());
-                sb.append(": ");
-
-                sb.append("\n");
-            }
-
-            if (prices.size() == 0) {
-                return "Все цены:\n нет данных";
-            } else {
-                return "Все цены:" + "на дату: " + localDateTime + sb.toString();
-            }
-        } catch (GetVal_Exception e) {
-            return "Ошибка получения данных";
-        }
-
-    }
-
-//    private Map<String, PriceRow> get_prices() throws GetVal_Exception {
-//        return qs.getAllValues();
-//    }
-
 }

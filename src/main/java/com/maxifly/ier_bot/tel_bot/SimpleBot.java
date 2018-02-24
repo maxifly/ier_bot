@@ -4,6 +4,7 @@ import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -14,25 +15,19 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.util.Locale;
+
 
 public class SimpleBot extends TelegramLongPollingBot {
     @Autowired
     private MessageProcessor messageProcessor;
+    @Autowired
+    ApplicationContext applicationContext;
 
     private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
 
     static String HELP_STRING =
-            "Supported commands: \n /help \n /allprice \n /price yourCode";
-//            "Supported commands: \n /help \n /allprice \n /price yourCode \n /clear - сбросить кеш данных";
-//    public static void main(String[] args) {
-//        ApiContextInitializer.init();
-//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-//        try {
-//            telegramBotsApi.registerBot(new SimpleBot());
-//        } catch (TelegramApiException e) {
-//            e.printStackTrace();
-//        }
-//    }
+            "Supported commands: \n /help \n /price yourISIN \n /info yourISIN";
 
     private String bot_Username;
     private String bot_Token;
@@ -74,9 +69,6 @@ public class SimpleBot extends TelegramLongPollingBot {
                 case "/help":
                     sendMsg(message, HELP_STRING);
                     break;
-                case "/allprice":
-                    sendMsg(message, messageProcessor.getAllPrice_Resp());
-                    break;
                 case "/price":
                     sendMsg(message, messageProcessor.getPrice(msg_tockens));
                     break;
@@ -87,7 +79,8 @@ public class SimpleBot extends TelegramLongPollingBot {
                     sendMsg(message, messageProcessor.clear());
                     break;
                 default:
-                    sendMsg(message, "Я не знаю что ответить на это");
+                    sendMsg(message, applicationContext.getMessage("msg.unknown_message", null, Locale.getDefault()));
+
             }
         }
     }
