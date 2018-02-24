@@ -1,11 +1,16 @@
 package com.maxifly.ier_bot;
 
 import com.maxifly.ier_bot.config.AppConfig;
+import com.maxifly.ier_bot.config.MsgConfig;
 import com.maxifly.ier_bot.tel_bot.SimpleBot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -26,7 +31,8 @@ public class IerBotApplication {
 //			e.printStackTrace();
 //		}
 
-		SpringApplication.run(AppConfig.class, args);
+		Object[] cfg = new Object[]{AppConfig.class, MsgConfig.class};
+		SpringApplication.run(cfg, args);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.maxifly.ier_bot.config;
 import com.maxifly.ier_bot.Prices;
 import com.maxifly.ier_bot.ScheduledTasks;
 import com.maxifly.ier_bot.ggl_clnt.mapper.BondRowMapper;
+import com.maxifly.ier_bot.ggl_clnt.model.PriceRow;
 import com.maxifly.ier_bot.tel_bot.BotRegister;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.tel_bot.MessageProcessor;
@@ -17,6 +18,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -54,12 +56,7 @@ public class AppConfig {
         return new ConcurrentMapCacheManager("prices");
     }
 
-    @Bean
-    MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
-        return messageSource;
-    }
+
 
     @Bean()
     public SimpleBot simpleBot() {
@@ -104,4 +101,6 @@ public class AppConfig {
     public BondRowMapper bondRowMapper() {
         return new BondRowMapper();
     }
+
+
 }
