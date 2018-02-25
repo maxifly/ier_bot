@@ -5,3 +5,5 @@
 /src/main/resources/client_secret.json
 *.log
 phones.csv
+*.data
+/.ehcache-diskstore.lock

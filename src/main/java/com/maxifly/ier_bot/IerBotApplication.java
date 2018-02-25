@@ -30,7 +30,7 @@ public class IerBotApplication {
 //		} catch (TelegramApiException e) {
 //			e.printStackTrace();
 //		}
-
+		System.setProperty("net.sf.ehcache.enableShutdownHook","true");
 		Object[] cfg = new Object[]{AppConfig.class, MsgConfig.class};
 		SpringApplication.run(cfg, args);
 	}
