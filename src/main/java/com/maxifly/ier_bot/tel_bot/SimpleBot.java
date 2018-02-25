@@ -38,7 +38,7 @@ public class SimpleBot extends TelegramLongPollingBot {
     @Autowired
     UserChecker userChecker;
 
-    private Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
+    private Logger logger = LoggerFactory.getLogger(SimpleBot.class);
 
     static String HELP_STRING =
             "Supported commands: \n /help \n /price yourISIN \n /info yourISIN";

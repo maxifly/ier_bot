@@ -4,6 +4,7 @@ import com.maxifly.ier_bot.Prices;
 import com.maxifly.ier_bot.ScheduledTasks;
 import com.maxifly.ier_bot.ggl_clnt.mapper.BondRowMapper;
 import com.maxifly.ier_bot.ggl_clnt.model.PriceRow;
+import com.maxifly.ier_bot.rights.RightsCSVChecker;
 import com.maxifly.ier_bot.tel_bot.BotRegister;
 import com.maxifly.ier_bot.ggl_clnt.Quickstart;
 import com.maxifly.ier_bot.tel_bot.MessageProcessor;
@@ -44,13 +45,12 @@ public class AppConfig {
     @Value("${sheet.range}")
     String sheetRange;
 
-    @Value("${sheet.column.code}")
-    Integer columnCode;
-    @Value("${sheet.column.price}")
-    Integer columnPrice;
-
     @Value("${prices.cache.flush.delay}")
     String testD;
+
+//    @Value("${file.phones?:'phones.csv'}")
+    @Value("${file.phones:'phones.csv'}")
+    String csvPhoneFile;
 
     @Bean
     public CacheManager cacheManager() {
@@ -106,5 +106,11 @@ public class AppConfig {
     @Bean
     public UserChecker userChecker() {
         return new UserChecker();
+    }
+    @Bean
+    public RightsCSVChecker rightsCSVChecker(){
+        logger.debug("csvPhoneFile: {}",csvPhoneFile);
+        logger.debug("curr work dir " +System.getProperty("user.dir"));
+        return new RightsCSVChecker(csvPhoneFile);
     }
 }
