@@ -14,17 +14,14 @@ public class UserChecker {
     @Autowired
     RightsCSVChecker rightsChecker;
 
-    @Cacheable(value = "rights", key="#id", unless = "#result == false")
+    @Cacheable(value = "rights", key = "#id", unless = "#result == false")
     public Boolean isUserHaveRight(Integer id) {
-        logger.info("isUserHaveRight {}", id);
+        logger.debug("isUserHaveRight {}", id);
         return false;
     }
 
-    @Cacheable(value = "rights", key="#id", unless = "#result == false")
+    @Cacheable(value = "rights", key = "#id", unless = "#result == false")
     public boolean checkUserPhone(Integer id, String phone) {
-        //TODO Это заглушка
-        Boolean result = rightsChecker.isPhoneExists(phone);
-
-        return result;
+        return rightsChecker.isPhoneExists(phone);
     }
 }

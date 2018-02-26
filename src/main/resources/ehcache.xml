@@ -13,12 +13,6 @@
            diskSpoolBufferSizeMB="20"
 
            diskPersistent="true">
-
-        <!--timeToIdleSeconds="300" timeToLiveSeconds="600"-->
-        <!--memoryStoreEvictionPolicy="LFU"-->
-        <!--transactionalMode="off">-->
-        <!--<persistence strategy="localRestartable" synchronousWrites="true"/>-->
-        <!--<persistence strategy="localRestartable" synchronousWrites="true"/>-->
     </defaultCache>
 
     <cache name="rights"
@@ -29,22 +23,13 @@
 
            diskPersistent="true">
 
-    <!--timeToIdleSeconds="300" timeToLiveSeconds="600"-->
-           <!--memoryStoreEvictionPolicy="LFU"-->
-           <!--transactionalMode="off">-->
-        <!--<persistence strategy="localRestartable" synchronousWrites="true"/>-->
-        <!--<persistence strategy="localRestartable" synchronousWrites="true"/>-->
-    </cache>
+   </cache>
 
     <cache name="prices"
-           maxEntriesLocalHeap="10000"
-           maxEntriesLocalDisk="10000"
-           eternal="true"
-           diskSpoolBufferSizeMB="20">
-    <!--timeToIdleSeconds="300" timeToLiveSeconds="600"-->
-           <!--memoryStoreEvictionPolicy="LFU"-->
-           <!--transactionalMode="off">-->
-        <persistence strategy="localTempSwap" />
+           maxEntriesLocalHeap="100000"
+           overflowToDisk="false"
+           eternal="true">
+         <persistence strategy="none" />
     </cache>
 
 </ehcache>

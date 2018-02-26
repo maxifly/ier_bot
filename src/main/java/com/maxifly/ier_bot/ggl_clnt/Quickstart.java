@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,7 +139,24 @@ public class Quickstart {
         this.bondRowMapper = bondRowMapper;
     }
 
+    /**
+     * Получить все записи из книги
+     *
+     * @param result
+     * @throws GetVal_Exception
+     */
     public void getAllValues(Map<String, PriceRow> result) throws GetVal_Exception {
+        findValue(result, null);
+    }
+
+    /**
+     * Получить запись только об определенном товаре
+     *
+     * @param result
+     * @param itemCode - регистронезависимый код товара
+     * @throws GetVal_Exception
+     */
+    public void findValue(Map<String, PriceRow> result, String itemCode) throws GetVal_Exception {
         try {
             Sheets service = getSheetsService();
 
@@ -152,6 +168,7 @@ public class Quickstart {
                 logger.info("No data found.");
             } else {
                 LocalDateTime localDateTime = LocalDateTime.now();
+                int i = 0;
                 for (List row : values) {
                     // Print columns A and E, which correspond to indices 0 and 4.
                     PriceRow priceRow = bondRowMapper.createPriceRow(row, localDateTime);
@@ -159,9 +176,17 @@ public class Quickstart {
                         logger.debug("Get row: " + priceRow);
                     }
                     // Пока решаю, что коды регистронезависимые
-                    result.put(priceRow.getItemCode().toUpperCase(), priceRow);
+
+
+                    if (itemCode != null && itemCode.equals(priceRow.getItemCode().toUpperCase())) {
+                        result.put(priceRow.getItemCode().toUpperCase(), priceRow);
+                        break;
+                    } else if (itemCode == null) {
+                        result.put(priceRow.getItemCode().toUpperCase(), priceRow);
+                    }
+
                 }
-                logger.info("Get " + result.size() + " rows");
+                logger.info("Get {} rows. Found {} rows.", values.size(), result.size());
             }
         } catch (Exception ioe) {
             logger.error("Exception when get values", ioe);
