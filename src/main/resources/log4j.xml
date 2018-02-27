@@ -21,7 +21,7 @@
     </appender>
 
     <logger name="com.maxifly">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
         <!--<appender-ref ref="console" />-->
         <appender-ref ref="application" />
     </logger>

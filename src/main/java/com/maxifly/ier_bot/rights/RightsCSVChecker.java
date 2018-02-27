@@ -28,10 +28,21 @@ public class RightsCSVChecker {
                 // use comma as separator
                 String[] row = line.split(cvsSplitBy);
                 logger.debug(row[0]);
-                if (phone.equals(row[0])) {
-                    result = true;
-                    logger.info("Phone {} found in file {}", phone, csvFile);
+                String phoneFromFile = row[0];
+
+                if (phoneFromFile != null) {
+                    phoneFromFile = phoneFromFile.trim().replaceAll("^\"|\"$", "");
+                    // Проверяем телефон из файла и возможные варианты с + на совпадение с переданным телефоном
+                    if (phoneFromFile.equals(phone) ||
+                            phoneFromFile.equals("+" + phone) ||
+                            ("+" + phoneFromFile).equals(phone)
+                            ) {
+                        result = true;
+                        logger.info("Phone {} found in file {}", phone, csvFile);
+                    }
                 }
+
+
             }
 
         } catch (IOException e) {
